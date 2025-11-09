@@ -1,0 +1,335 @@
+/*!
+ * Animations Stylesheet
+ * Animation definitions, keyframes, and transition utilities
+ */
+
+/* Keyframe animations */
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes blinkingScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes scroll {
+  0% {
+    top: -33%;
+  }
+  to {
+    transform: 100%;
+  }
+}
+
+/* Scroll indicator */
+.scroll-w {
+  align-items: flex-end;
+  bottom: 71rem;
+  display: flex;
+  gap: 27rem;
+  pointer-events: none;
+  position: fixed;
+  right: 40px;
+  transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  width: -moz-max-content;
+  width: max-content;
+  z-index: 5;
+}
+
+@media (min-width: 1024px) {
+  .scroll-w {
+    right: 162rem;
+  }
+}
+
+.scroll-w .scroll-text {
+  color: #fff;
+  font-family: 'OMEGA CT Regular';
+  font-size: 12rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 8rem;
+  opacity: 0;
+  text-align: center;
+  text-transform: uppercase;
+  transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.scroll-w .scroll-icon {
+  height: 65rem;
+  opacity: 0;
+  position: relative;
+}
+
+.scroll-w .scroll-icon .scroll-icon-inside {
+  background: hsla(0, 0%, 100%, 0.1);
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  margin: auto;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: background 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  width: 2rem;
+}
+
+.scroll-w .scroll-icon .scroll-icon-inside .active-bar {
+  background: #c40d2f;
+  height: 33%;
+  position: absolute;
+  top: 0;
+  transition: background 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+              opacity 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  width: 100%;
+}
+
+.scroll-w .scroll-icon .scroll-icon-inside .active-bar.static {
+  opacity: 0;
+}
+
+.scroll-w .scroll-icon .scroll-icon-inside .active-bar.animated {
+  animation: none;
+  animation: scroll 4s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+  top: -33%;
+}
+
+/* Cursor animations */
+.cursor-w {
+  opacity: 0;
+  transition: opacity 2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.cursor-w.visible {
+  opacity: 1;
+}
+
+.cursor-w.loading {
+  opacity: 0;
+}
+
+.cursor {
+  left: -29px;
+  overflow: visible;
+  pointer-events: none;
+  position: fixed;
+  top: -29px;
+  width: 58px;
+}
+
+.cursor circle {
+  animation: rotating 2s cubic-bezier(0.645, 0.045, 0.355, 1) infinite;
+  opacity: 0;
+  transform-origin: center;
+}
+
+.cursor circle:nth-child(1) { animation-duration: 1.5s; }
+.cursor circle:nth-child(2) { animation-duration: 3s; }
+.cursor circle:nth-child(3) { animation-duration: 4.5s; }
+.cursor circle:nth-child(4) { animation-duration: 6s; }
+.cursor circle:nth-child(5) { animation-duration: 7.5s; }
+.cursor circle:nth-child(6) { animation-duration: 9s; }
+.cursor circle:nth-child(7) { animation-duration: 10.5s; }
+.cursor circle:nth-child(8) { animation-duration: 12s; }
+.cursor circle:nth-child(9) { animation-duration: 13.5s; }
+.cursor circle:nth-child(10) { animation-duration: 15s; }
+.cursor circle:nth-child(11) { animation-duration: 16.5s; }
+.cursor circle:nth-child(12) { animation-duration: 18s; }
+.cursor circle:nth-child(13) { animation-duration: 19.5s; }
+.cursor circle:nth-child(14) { animation-duration: 21s; }
+.cursor circle:nth-child(15) { animation-duration: 22.5s; }
+.cursor circle:nth-child(16) { animation-duration: 24s; }
+.cursor circle:nth-child(17) { animation-duration: 25.5s; }
+.cursor circle:nth-child(18) { animation-duration: 27s; }
+.cursor circle:nth-child(19) { animation-duration: 28.5s; }
+.cursor circle:nth-child(20) { animation-duration: 30s; }
+
+.cursor circle.static-circle {
+  animation: none;
+  opacity: 1;
+}
+
+.outer-circle ellipse {
+  animation: blinkingScale 10s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+  opacity: 0.1;
+  transform-origin: 50% 50%;
+}
+
+.ext-circles,
+.ext-circles circle,
+.outer-circle ellipse {
+  transform-origin: 50% 50%;
+}
+
+.ext-circles circle {
+  animation: rotating 10s linear infinite;
+  animation-duration: 10s !important;
+  opacity: 1;
+}
+
+.ext-circles circle:nth-child(1) {
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.ext-circles circle:nth-child(2) {
+  animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+.ext-circles circle:nth-child(3) {
+  animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.ext-circles circle:nth-child(4) {
+  animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+}
+
+/* Carousel counter animations */
+.carousel-counter {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.carousel-counter .circle-counter {
+  background: #fff;
+  border-radius: 50%;
+  height: 6rem;
+  margin-left: 10rem;
+  opacity: 0.2;
+  transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  width: 6rem;
+}
+
+.carousel-counter .circle-counter.active {
+  opacity: 1;
+}
+
+.carousel-counter .circle-counter:first-child {
+  margin-left: 0;
+}
+
+/* Longpress logo animation */
+.longpress-logo {
+  bottom: 24px;
+  display: none;
+  left: 0;
+  margin: 0 auto;
+  opacity: 0;
+  position: fixed;
+  right: 0;
+  width: 50rem;
+}
+
+@media (min-width: 768px) {
+  .longpress-logo {
+    bottom: 58px;
+    width: 108rem;
+  }
+}
+
+/* Accessibility buttons */
+.accessibility-button {
+  color: #fff;
+  font-family: 'OMEGA CT Regular';
+  font-size: 12rem;
+  opacity: 0;
+  position: fixed;
+  z-index: 5;
+}
+
+.accessibility-button .off-text {
+  display: none;
+}
+
+.accessibility-button .off-text,
+.accessibility-button .on-text {
+  opacity: 0.6;
+}
+
+.accessibility-button.animation {
+  bottom: 50px;
+  right: 40px;
+}
+
+@media (min-width: 1024px) {
+  .accessibility-button.animation {
+    bottom: 65rem;
+    left: 162rem;
+    right: unset;
+  }
+}
+
+.accessibility-button.contrast {
+  bottom: calc(50px + 16rem);
+  right: 40px;
+}
+
+@media (min-width: 1024px) {
+  .accessibility-button.contrast {
+    bottom: 81rem;
+    left: 162rem;
+    right: unset;
+  }
+}
+
+.accessibility-button.off .off-text {
+  display: block;
+}
+
+.accessibility-button.off .on-text {
+  display: none;
+}
+
+/* Mute button animations */
+.mute-button {
+  bottom: 10px;
+  cursor: pointer;
+  left: 10px;
+  padding: 10px;
+  position: fixed;
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1),
+              opacity 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+  width: 63px;
+  z-index: 50;
+}
+
+@media (min-width: 768px) {
+  .mute-button {
+    bottom: 39px;
+    left: 52px;
+  }
+}
+
+.mute-button path {
+  transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.mute-button.paused path {
+  opacity: 0.5;
+}
+
+.mute-button.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mute-button:hover {
+    transform: scale(1.2);
+  }
+}

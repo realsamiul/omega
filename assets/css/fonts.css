@@ -1,0 +1,34 @@
+/*!
+ * Fonts Stylesheet
+ * Contains all @font-face definitions and font-family fallbacks
+ */
+
+@font-face {
+  font-display: swap;
+  font-family: 'OMEGA CT Light';
+  font-style: normal;
+  font-weight: 300;
+  src: local('OmegaCT-Light'),
+       url(/space-sustainability/assets/fonts/omega-ct/OmegaCT-Light.woff2) format('woff2'),
+       url(/space-sustainability/assets/fonts/omega-ct/OmegaCT-Light.woff) format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'OMEGA CT Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: local('OmegaCT-Regular'),
+       url(/space-sustainability/assets/fonts/omega-ct/OmegaCT-Regular.woff2) format('woff2'),
+       url(/space-sustainability/assets/fonts/omega-ct/OmegaCT-Regular.woff) format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'OMEGA CT Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local('OmegaCT-Bold'),
+       url(/space-sustainability/assets/fonts/omega-ct/OmegaCT-Bold.woff2) format('woff2'),
+       url(/space-sustainability/assets/fonts/omega-ct/OmegaCT-Bold.woff) format('woff');
+}

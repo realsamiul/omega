@@ -1,0 +1,415 @@
+/*!
+ * Layout Stylesheet
+ * Grid system and layout utilities
+ */
+
+/* Grid system */
+.grid {
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  padding: 0 40px;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    -moz-column-gap: 20rem;
+    column-gap: 20rem;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    padding: 0;
+  }
+}
+
+/* Column utilities - Mobile/base (6 columns) */
+.container .col-start-1,
+.mb\:container .col-start-1,
+.tb\:container .col-start-1 { grid-column-start: 1; }
+.container .col-end-1,
+.mb\:container .col-end-1,
+.tb\:container .col-end-1 { grid-column-end: 1; }
+
+.container .col-start-2,
+.mb\:container .col-start-2,
+.tb\:container .col-start-2 { grid-column-start: 2; }
+.container .col-end-2,
+.mb\:container .col-end-2,
+.tb\:container .col-end-2 { grid-column-end: 2; }
+
+.container .col-start-3,
+.mb\:container .col-start-3,
+.tb\:container .col-start-3 { grid-column-start: 3; }
+.container .col-end-3,
+.mb\:container .col-end-3,
+.tb\:container .col-end-3 { grid-column-end: 3; }
+
+.container .col-start-4,
+.mb\:container .col-start-4,
+.tb\:container .col-start-4 { grid-column-start: 4; }
+.container .col-end-4,
+.mb\:container .col-end-4,
+.tb\:container .col-end-4 { grid-column-end: 4; }
+
+.container .col-start-5,
+.mb\:container .col-start-5,
+.tb\:container .col-start-5 { grid-column-start: 5; }
+.container .col-end-5,
+.mb\:container .col-end-5,
+.tb\:container .col-end-5 { grid-column-end: 5; }
+
+.container .col-start-6,
+.mb\:container .col-start-6,
+.tb\:container .col-start-6 { grid-column-start: 6; }
+.container .col-end-6,
+.mb\:container .col-end-6,
+.tb\:container .col-end-6 { grid-column-end: 6; }
+
+.container .col-start-7,
+.mb\:container .col-start-7,
+.tb\:container .col-start-7 { grid-column-start: 7; }
+.container .col-end-7,
+.mb\:container .col-end-7,
+.tb\:container .col-end-7 { grid-column-end: 7; }
+
+.container .col-start-8,
+.mb\:container .col-start-8,
+.tb\:container .col-start-8 { grid-column-start: 8; }
+.container .col-end-8,
+.mb\:container .col-end-8,
+.tb\:container .col-end-8 { grid-column-end: 8; }
+
+.container .col-start-9,
+.mb\:container .col-start-9,
+.tb\:container .col-start-9 { grid-column-start: 9; }
+.container .col-end-9,
+.mb\:container .col-end-9,
+.tb\:container .col-end-9 { grid-column-end: 9; }
+
+.container .col-start-10,
+.mb\:container .col-start-10,
+.tb\:container .col-start-10 { grid-column-start: 10; }
+.container .col-end-10,
+.mb\:container .col-end-10,
+.tb\:container .col-end-10 { grid-column-end: 10; }
+
+.container .col-start-11,
+.mb\:container .col-start-11,
+.tb\:container .col-start-11 { grid-column-start: 11; }
+.container .col-end-11,
+.mb\:container .col-end-11,
+.tb\:container .col-end-11 { grid-column-end: 11; }
+
+.container .col-start-12,
+.mb\:container .col-start-12,
+.tb\:container .col-start-12 { grid-column-start: 12; }
+.container .col-end-12,
+.mb\:container .col-end-12,
+.tb\:container .col-end-12 { grid-column-end: 12; }
+
+.container .col-start-13,
+.mb\:container .col-start-13,
+.tb\:container .col-start-13 { grid-column-start: 13; }
+.container .col-end-13,
+.mb\:container .col-end-13,
+.tb\:container .col-end-13 { grid-column-end: 13; }
+
+/* Tablet breakpoint (768px+) */
+@media (min-width: 768px) {
+  .container .tb\:col-start-1,
+  .mb\:container .tb\:col-start-1,
+  .tb\:container .tb\:col-start-1 { grid-column-start: 1; }
+  .container .tb\:col-end-1,
+  .mb\:container .tb\:col-end-1,
+  .tb\:container .tb\:col-end-1 { grid-column-end: 1; }
+
+  .container .tb\:col-start-2,
+  .mb\:container .tb\:col-start-2,
+  .tb\:container .tb\:col-start-2 { grid-column-start: 2; }
+  .container .tb\:col-end-2,
+  .mb\:container .tb\:col-end-2,
+  .tb\:container .tb\:col-end-2 { grid-column-end: 2; }
+
+  .container .tb\:col-start-3,
+  .mb\:container .tb\:col-start-3,
+  .tb\:container .tb\:col-start-3 { grid-column-start: 3; }
+  .container .tb\:col-end-3,
+  .mb\:container .tb\:col-end-3,
+  .tb\:container .tb\:col-end-3 { grid-column-end: 3; }
+
+  .container .tb\:col-start-4,
+  .mb\:container .tb\:col-start-4,
+  .tb\:container .tb\:col-start-4 { grid-column-start: 4; }
+  .container .tb\:col-end-4,
+  .mb\:container .tb\:col-end-4,
+  .tb\:container .tb\:col-end-4 { grid-column-end: 4; }
+
+  .container .tb\:col-start-5,
+  .mb\:container .tb\:col-start-5,
+  .tb\:container .tb\:col-start-5 { grid-column-start: 5; }
+  .container .tb\:col-end-5,
+  .mb\:container .tb\:col-end-5,
+  .tb\:container .tb\:col-end-5 { grid-column-end: 5; }
+
+  .container .tb\:col-start-6,
+  .mb\:container .tb\:col-start-6,
+  .tb\:container .tb\:col-start-6 { grid-column-start: 6; }
+  .container .tb\:col-end-6,
+  .mb\:container .tb\:col-end-6,
+  .tb\:container .tb\:col-end-6 { grid-column-end: 6; }
+
+  .container .tb\:col-start-7,
+  .mb\:container .tb\:col-start-7,
+  .tb\:container .tb\:col-start-7 { grid-column-start: 7; }
+  .container .tb\:col-end-7,
+  .mb\:container .tb\:col-end-7,
+  .tb\:container .tb\:col-end-7 { grid-column-end: 7; }
+
+  .container .tb\:col-start-8,
+  .mb\:container .tb\:col-start-8,
+  .tb\:container .tb\:col-start-8 { grid-column-start: 8; }
+  .container .tb\:col-end-8,
+  .mb\:container .tb\:col-end-8,
+  .tb\:container .tb\:col-end-8 { grid-column-end: 8; }
+
+  .container .tb\:col-start-9,
+  .mb\:container .tb\:col-start-9,
+  .tb\:container .tb\:col-start-9 { grid-column-start: 9; }
+  .container .tb\:col-end-9,
+  .mb\:container .tb\:col-end-9,
+  .tb\:container .tb\:col-end-9 { grid-column-end: 9; }
+
+  .container .tb\:col-start-10,
+  .mb\:container .tb\:col-start-10,
+  .tb\:container .tb\:col-start-10 { grid-column-start: 10; }
+  .container .tb\:col-end-10,
+  .mb\:container .tb\:col-end-10,
+  .tb\:container .tb\:col-end-10 { grid-column-end: 10; }
+
+  .container .tb\:col-start-11,
+  .mb\:container .tb\:col-start-11,
+  .tb\:container .tb\:col-start-11 { grid-column-start: 11; }
+  .container .tb\:col-end-11,
+  .mb\:container .tb\:col-end-11,
+  .tb\:container .tb\:col-end-11 { grid-column-end: 11; }
+
+  .container .tb\:col-start-12,
+  .mb\:container .tb\:col-start-12,
+  .tb\:container .tb\:col-start-12 { grid-column-start: 12; }
+  .container .tb\:col-end-12,
+  .mb\:container .tb\:col-end-12,
+  .tb\:container .tb\:col-end-12 { grid-column-end: 12; }
+
+  .container .tb\:col-start-13,
+  .mb\:container .tb\:col-start-13,
+  .tb\:container .tb\:col-start-13 { grid-column-start: 13; }
+  .container .tb\:col-end-13,
+  .mb\:container .tb\:col-end-13,
+  .tb\:container .tb\:col-end-13 { grid-column-end: 13; }
+}
+
+/* Desktop breakpoint (1024px+) - 12 column grid */
+@media (min-width: 1024px) {
+  .container .dk\:col-start-1,
+  .mb\:container .dk\:col-start-1,
+  .tb\:container .dk\:col-start-1 { grid-column-start: 1; }
+  .container .dk\:col-end-1,
+  .mb\:container .dk\:col-end-1,
+  .tb\:container .dk\:col-end-1 { grid-column-end: 1; }
+
+  .container .dk\:col-start-2,
+  .mb\:container .dk\:col-start-2,
+  .tb\:container .dk\:col-start-2 { grid-column-start: 2; }
+  .container .dk\:col-end-2,
+  .mb\:container .dk\:col-end-2,
+  .tb\:container .dk\:col-end-2 { grid-column-end: 2; }
+
+  .container .dk\:col-start-3,
+  .mb\:container .dk\:col-start-3,
+  .tb\:container .dk\:col-start-3 { grid-column-start: 3; }
+  .container .dk\:col-end-3,
+  .mb\:container .dk\:col-end-3,
+  .tb\:container .dk\:col-end-3 { grid-column-end: 3; }
+
+  .container .dk\:col-start-4,
+  .mb\:container .dk\:col-start-4,
+  .tb\:container .dk\:col-start-4 { grid-column-start: 4; }
+  .container .dk\:col-end-4,
+  .mb\:container .dk\:col-end-4,
+  .tb\:container .dk\:col-end-4 { grid-column-end: 4; }
+
+  .container .dk\:col-start-5,
+  .mb\:container .dk\:col-start-5,
+  .tb\:container .dk\:col-start-5 { grid-column-start: 5; }
+  .container .dk\:col-end-5,
+  .mb\:container .dk\:col-end-5,
+  .tb\:container .dk\:col-end-5 { grid-column-end: 5; }
+
+  .container .dk\:col-start-6,
+  .mb\:container .dk\:col-start-6,
+  .tb\:container .dk\:col-start-6 { grid-column-start: 6; }
+  .container .dk\:col-end-6,
+  .mb\:container .dk\:col-end-6,
+  .tb\:container .dk\:col-end-6 { grid-column-end: 6; }
+
+  .container .dk\:col-start-7,
+  .mb\:container .dk\:col-start-7,
+  .tb\:container .dk\:col-start-7 { grid-column-start: 7; }
+  .container .dk\:col-end-7,
+  .mb\:container .dk\:col-end-7,
+  .tb\:container .dk\:col-end-7 { grid-column-end: 7; }
+
+  .container .dk\:col-start-8,
+  .mb\:container .dk\:col-start-8,
+  .tb\:container .dk\:col-start-8 { grid-column-start: 8; }
+  .container .dk\:col-end-8,
+  .mb\:container .dk\:col-end-8,
+  .tb\:container .dk\:col-end-8 { grid-column-end: 8; }
+
+  .container .dk\:col-start-9,
+  .mb\:container .dk\:col-start-9,
+  .tb\:container .dk\:col-start-9 { grid-column-start: 9; }
+  .container .dk\:col-end-9,
+  .mb\:container .dk\:col-end-9,
+  .tb\:container .dk\:col-end-9 { grid-column-end: 9; }
+
+  .container .dk\:col-start-10,
+  .mb\:container .dk\:col-start-10,
+  .tb\:container .dk\:col-start-10 { grid-column-start: 10; }
+  .container .dk\:col-end-10,
+  .mb\:container .dk\:col-end-10,
+  .tb\:container .dk\:col-end-10 { grid-column-end: 10; }
+
+  .container .dk\:col-start-11,
+  .mb\:container .dk\:col-start-11,
+  .tb\:container .dk\:col-start-11 { grid-column-start: 11; }
+  .container .dk\:col-end-11,
+  .mb\:container .dk\:col-end-11,
+  .tb\:container .dk\:col-end-11 { grid-column-end: 11; }
+
+  .container .dk\:col-start-12,
+  .mb\:container .dk\:col-start-12,
+  .tb\:container .dk\:col-start-12 { grid-column-start: 12; }
+  .container .dk\:col-end-12,
+  .mb\:container .dk\:col-end-12,
+  .tb\:container .dk\:col-end-12 { grid-column-end: 12; }
+
+  .container .dk\:col-start-13,
+  .mb\:container .dk\:col-start-13,
+  .tb\:container .dk\:col-start-13 { grid-column-start: 13; }
+  .container .dk\:col-end-13,
+  .mb\:container .dk\:col-end-13,
+  .tb\:container .dk\:col-end-13 { grid-column-end: 13; }
+}
+
+/* Large desktop breakpoint (1440px+) */
+@media (min-width: 1440px) {
+  .container .lg\:col-start-1,
+  .mb\:container .lg\:col-start-1,
+  .tb\:container .lg\:col-start-1 { grid-column-start: 1; }
+  .container .lg\:col-end-1,
+  .mb\:container .lg\:col-end-1,
+  .tb\:container .lg\:col-end-1 { grid-column-end: 1; }
+
+  .container .lg\:col-start-2,
+  .mb\:container .lg\:col-start-2,
+  .tb\:container .lg\:col-start-2 { grid-column-start: 2; }
+  .container .lg\:col-end-2,
+  .mb\:container .lg\:col-end-2,
+  .tb\:container .lg\:col-end-2 { grid-column-end: 2; }
+
+  .container .lg\:col-start-3,
+  .mb\:container .lg\:col-start-3,
+  .tb\:container .lg\:col-start-3 { grid-column-start: 3; }
+  .container .lg\:col-end-3,
+  .mb\:container .lg\:col-end-3,
+  .tb\:container .lg\:col-end-3 { grid-column-end: 3; }
+
+  .container .lg\:col-start-4,
+  .mb\:container .lg\:col-start-4,
+  .tb\:container .lg\:col-start-4 { grid-column-start: 4; }
+  .container .lg\:col-end-4,
+  .mb\:container .lg\:col-end-4,
+  .tb\:container .lg\:col-end-4 { grid-column-end: 4; }
+
+  .container .lg\:col-start-5,
+  .mb\:container .lg\:col-start-5,
+  .tb\:container .lg\:col-start-5 { grid-column-start: 5; }
+  .container .lg\:col-end-5,
+  .mb\:container .lg\:col-end-5,
+  .tb\:container .lg\:col-end-5 { grid-column-end: 5; }
+
+  .container .lg\:col-start-6,
+  .mb\:container .lg\:col-start-6,
+  .tb\:container .lg\:col-start-6 { grid-column-start: 6; }
+  .container .lg\:col-end-6,
+  .mb\:container .lg\:col-end-6,
+  .tb\:container .lg\:col-end-6 { grid-column-end: 6; }
+
+  .container .lg\:col-start-7,
+  .mb\:container .lg\:col-start-7,
+  .tb\:container .lg\:col-start-7 { grid-column-start: 7; }
+  .container .lg\:col-end-7,
+  .mb\:container .lg\:col-end-7,
+  .tb\:container .lg\:col-end-7 { grid-column-end: 7; }
+
+  .container .lg\:col-start-8,
+  .mb\:container .lg\:col-start-8,
+  .tb\:container .lg\:col-start-8 { grid-column-start: 8; }
+  .container .lg\:col-end-8,
+  .mb\:container .lg\:col-end-8,
+  .tb\:container .lg\:col-end-8 { grid-column-end: 8; }
+
+  .container .lg\:col-start-9,
+  .mb\:container .lg\:col-start-9,
+  .tb\:container .lg\:col-start-9 { grid-column-start: 9; }
+  .container .lg\:col-end-9,
+  .mb\:container .lg\:col-end-9,
+  .tb\:container .lg\:col-end-9 { grid-column-end: 9; }
+
+  .container .lg\:col-start-10,
+  .mb\:container .lg\:col-start-10,
+  .tb\:container .lg\:col-start-10 { grid-column-start: 10; }
+  .container .lg\:col-end-10,
+  .mb\:container .lg\:col-end-10,
+  .tb\:container .lg\:col-end-10 { grid-column-end: 10; }
+
+  .container .lg\:col-start-11,
+  .mb\:container .lg\:col-start-11,
+  .tb\:container .lg\:col-start-11 { grid-column-start: 11; }
+  .container .lg\:col-end-11,
+  .mb\:container .lg\:col-end-11,
+  .tb\:container .lg\:col-end-11 { grid-column-end: 11; }
+
+  .container .lg\:col-start-12,
+  .mb\:container .lg\:col-start-12,
+  .tb\:container .lg\:col-start-12 { grid-column-start: 12; }
+  .container .lg\:col-end-12,
+  .mb\:container .lg\:col-end-12,
+  .tb\:container .lg\:col-end-12 { grid-column-end: 12; }
+
+  .container .lg\:col-start-13,
+  .mb\:container .lg\:col-start-13,
+  .tb\:container .lg\:col-start-13 { grid-column-start: 13; }
+  .container .lg\:col-end-13,
+  .mb\:container .lg\:col-end-13,
+  .tb\:container .lg\:col-end-13 { grid-column-end: 13; }
+}
+
+/* Desktop section layout */
+@media (max-width: 767px) {
+  .dk-section {
+    padding: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .dk-section {
+    align-content: center;
+    height: 100vh;
+  }
+  
+  .dk-section * {
+    height: -moz-max-content;
+    height: max-content;
+  }
+}
