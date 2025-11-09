@@ -3,6 +3,10 @@
     {
       "source": "/",
       "destination": "/space-sustainability.html"
+    },
+    {
+      "source": "/space-sustainability/:path*",
+      "destination": "/space-sustainability/:path*"
     }
   ],
   "headers": [
