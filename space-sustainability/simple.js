@@ -1,406 +1,275 @@
-// Enhanced JavaScript for OMEGA Space Sustainability page
-// Maintains original aesthetic while ensuring media is visible and interactive features work
+/**
+ * Enhanced simple.js
+ * - Brings back the video reveal animation and smooth scrolling feel
+ * - Implements robust IntersectionObserver and smooth counters
+ * - Keeps lightweight/no WebGL
+ *
+ * Notes:
+ * - The script tolerates autoplay being blocked and retries on first user interaction
+ * - Observers are throttled/guarded for performance
+ */
+(function () {
+  'use strict';
 
-(function() {
-    'use strict';
+  // Respect reduced motion preference
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // ========================================
-    // 1. Video Autoplay
-    // ========================================
-    function setupVideoAutoplay() {
-        const video = document.querySelector('.objects-video');
-        if (video) {
-            // Ensure video is visible and plays
-            video.style.display = 'block';
-            video.style.opacity = '1';
-            video.style.visibility = 'visible';
-            
-            // Attempt to play video
-            video.play().catch(err => {
-                console.log('Video autoplay prevented:', err);
-                // Try again on user interaction
-                document.addEventListener('click', () => {
-                    video.play().catch(() => {});
-                }, { once: true });
-            });
-        }
+  // Helpers
+  function rafThrottled(fn) {
+    let scheduled = false;
+    return function (...args) {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => {
+        fn.apply(this, args);
+        scheduled = false;
+      });
+    };
+  }
+
+  // 1) Video reveal + autoplay logic (retries on user interaction)
+  function initVideoReveal() {
+    const v = document.querySelector('.objects-video');
+    const wrapper = v ? v.closest('.video-w') : null;
+    if (!v || !wrapper) return;
+
+    function tryPlay() {
+      v.muted = true;
+      v.loop = true;
+      v.playsInline = true;
+      v.play().catch(() => {
+        // autoplay blocked — will wait for user interaction
+      });
     }
 
-    // ========================================
-    // 2. Smooth Scroll Behavior
-    // ========================================
-    function setupSmoothScroll() {
-        // Enable smooth scrolling for the page
-        document.documentElement.style.scrollBehavior = 'smooth';
-        
-        // Handle anchor links with smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                if (href === '#') return;
-                
-                e.preventDefault();
-                const target = document.querySelector(href);
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+    // Reveal animation triggered by intersection observer (below) uses 'visible' class.
+    // Also attempt to play immediately once DOM is ready.
+    tryPlay();
+
+    // If autoplay blocked, retry once on first user gesture
+    const onUserGesture = function () {
+      tryPlay();
+      document.removeEventListener('click', onUserGesture);
+      document.removeEventListener('touchstart', onUserGesture);
+      document.removeEventListener('keydown', onUserGesture);
+    };
+    document.addEventListener('click', onUserGesture, { once: true, passive: true });
+    document.addEventListener('touchstart', onUserGesture, { once: true, passive: true });
+    document.addEventListener('keydown', onUserGesture, { once: true, passive: true });
+  }
+
+  // 2) Intersection observer that drives reveals and triggers counters
+  function initObservers() {
+    if (reduceMotion) {
+      // If reduced motion, just mark everything visible
+      document.querySelectorAll('section.fullscreen, .cards-w .card').forEach(el => el.classList.add('visible', 'animated'));
+      // Also ensure numbers show target values (no animated counting)
+      document.querySelectorAll('.number').forEach(el => {
+        el.textContent = el.getAttribute('data-final') || el.textContent;
+      });
+      return;
     }
 
-    // ========================================
-    // 3. Intersection Observer for Scroll Animations
-    // ========================================
-    function setupScrollAnimations() {
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: '0px 0px -10% 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible', 'animated');
-                    
-                    // Trigger number counters when sections become visible
-                    if (entry.target.classList.contains('objects-section') || 
-                        entry.target.classList.contains('satellites-section')) {
-                        animateNumbers(entry.target);
-                    }
-                }
-            });
-        }, observerOptions);
-
-        // Observe sections for fade-in animations
-        const sections = document.querySelectorAll(
-            '.hero-section, .protecting-section, .objects-section, ' +
-            '.satellites-section, .privateer-section, .wayfinder-section, .crew-section'
-        );
-        
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-
-        // Make hero section visible immediately
-        const heroSection = document.querySelector('.hero-section');
-        if (heroSection) {
-            heroSection.classList.add('visible', 'animated');
-        }
-    }
-
-    // ========================================
-    // 4. Number Counter Animation
-    // ========================================
-    function animateNumbers(section) {
-        const numberElement = section.querySelector('.number');
-        if (!numberElement || numberElement.dataset.animated) return;
-        
-        numberElement.dataset.animated = 'true';
-        const targetText = numberElement.textContent.trim();
-        
-        // Extract the number (remove commas)
-        const targetNumber = parseInt(targetText.replace(/,/g, ''));
-        if (isNaN(targetNumber)) return;
-        
-        const duration = 2000; // 2 seconds
-        const steps = 60;
-        const increment = targetNumber / steps;
-        let currentNumber = 0;
-        let currentStep = 0;
-
-        const timer = setInterval(() => {
-            currentStep++;
-            currentNumber = Math.min(currentNumber + increment, targetNumber);
-            
-            // Format number with commas
-            const formatted = Math.floor(currentNumber).toLocaleString('en-US');
-            numberElement.textContent = formatted;
-            
-            if (currentStep >= steps || currentNumber >= targetNumber) {
-                clearInterval(timer);
-                // Ensure final number is exact
-                numberElement.textContent = targetNumber.toLocaleString('en-US');
+    const options = { threshold: 0.15, rootMargin: '0px 0px -10% 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const el = entry.target;
+        if (entry.isIntersecting) {
+          el.classList.add('visible', 'animated');
+          // If it's a section that contains numbers, trigger count
+          if (el.querySelector && (el.classList.contains('objects-section') || el.classList.contains('satellites-section'))) {
+            el.querySelectorAll('.number').forEach(runCounterOnce);
+          }
+          // If it's video wrapper, attempt to play video
+          if (el.classList.contains('objects-section')) {
+            const video = el.querySelector('.objects-video');
+            if (video) {
+              video.play().catch(()=>{});
             }
-        }, duration / steps);
-    }
-
-    // ========================================
-    // 5. Card Carousel for Team Members
-    // ========================================
-    function setupCardCarousel() {
-        // Handle Privateer cards carousel (mobile/tablet)
-        setupCarouselForSection('.privateer-section');
-        
-        // Handle Crew cards carousel (mobile/tablet)
-        setupCarouselForSection('.crew-section');
-    }
-
-    function setupCarouselForSection(sectionSelector) {
-        const section = document.querySelector(sectionSelector);
-        if (!section) return;
-
-        const cardsWrapper = section.querySelector('.cards-w[data-slides-wrapper]');
-        const cards = section.querySelectorAll('.card');
-        const counters = section.querySelectorAll('.circle-counter');
-        
-        if (!cardsWrapper || cards.length === 0) return;
-
-        let currentIndex = 0;
-        let startX = 0;
-        let isDragging = false;
-
-        // Only enable carousel on mobile/tablet
-        function isCarouselEnabled() {
-            return window.innerWidth < 1024;
+          }
+          observer.unobserve(el); // one-time reveal to match original behavior
         }
+      });
+    }, options);
 
-        function showCard(index) {
-            if (!isCarouselEnabled()) return;
-            
-            currentIndex = index;
-            
-            // Update card positions
-            cards.forEach((card, i) => {
-                if (i === currentIndex) {
-                    card.style.opacity = '1';
-                    card.style.visibility = 'visible';
-                    card.style.transform = 'translateX(0)';
-                    card.style.zIndex = '1';
-                } else {
-                    card.style.opacity = '0';
-                    card.style.visibility = 'hidden';
-                    card.style.transform = i < currentIndex ? 'translateX(-100%)' : 'translateX(100%)';
-                    card.style.zIndex = '0';
-                }
-            });
+    // Observe the main full-screen sections
+    document.querySelectorAll('.hero-section, .protecting-section, .objects-section, .satellites-section, .privateer-section, .wayfinder-section, .crew-section').forEach(s => {
+      observer.observe(s);
+    });
 
-            // Update counter dots
-            counters.forEach((counter, i) => {
-                if (i === currentIndex) {
-                    counter.classList.add('active');
-                } else {
-                    counter.classList.remove('active');
-                }
-            });
+    // Observe individual cards for subtle stagger reveal
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          cardObserver.unobserve(entry.target);
         }
+      });
+    }, { threshold:0.08, rootMargin:'0px 0px -8% 0px' });
 
-        // Touch/Mouse event handlers
-        function handleStart(e) {
-            if (!isCarouselEnabled()) return;
-            isDragging = true;
-            startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+    document.querySelectorAll('.cards-w .card').forEach(c => cardObserver.observe(c));
+  }
+
+  // 3) Smooth scroll anchors (robust handling)
+  function initAnchorScrolls() {
+    // Only if not reduced motion (otherwise instant jump is preferred by user)
+    if (reduceMotion) return;
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (ev) => {
+        const href = a.getAttribute('href');
+        if (!href || href === '#') return;
+        const target = document.querySelector(href);
+        if (target) {
+          ev.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Update focus for accessibility
+          target.setAttribute('tabindex','-1');
+          target.focus({ preventScroll:true });
+          window.setTimeout(()=> target.removeAttribute('tabindex'), 1200);
         }
+      });
+    });
+  }
 
-        function handleEnd(e) {
-            if (!isCarouselEnabled() || !isDragging) return;
-            isDragging = false;
-            
-            const endX = e.type.includes('mouse') ? e.pageX : e.changedTouches[0].pageX;
-            const diff = startX - endX;
-            
-            if (Math.abs(diff) > 50) { // Minimum swipe distance
-                if (diff > 0 && currentIndex < cards.length - 1) {
-                    // Swipe left - next card
-                    showCard(currentIndex + 1);
-                } else if (diff < 0 && currentIndex > 0) {
-                    // Swipe right - previous card
-                    showCard(currentIndex - 1);
-                }
-            }
-        }
+  // 4) Smooth counters using requestAnimationFrame for precision
+  function runCounterOnce(el) {
+    if (!el || el.dataset.counted) return;
+    el.dataset.counted = '1';
+    const text = el.textContent.trim();
+    const target = parseInt((el.getAttribute('data-final') || text).toString().replace(/,/g,''), 10);
+    if (isNaN(target)) return;
+    const duration = 1400;
+    const start = performance.now();
+    const fmt = (n) => Math.floor(n).toLocaleString('en-US');
 
-        // Add event listeners
-        cardsWrapper.addEventListener('mousedown', handleStart);
-        cardsWrapper.addEventListener('touchstart', handleStart, { passive: true });
-        cardsWrapper.addEventListener('mouseup', handleEnd);
-        cardsWrapper.addEventListener('touchend', handleEnd, { passive: true });
-        cardsWrapper.addEventListener('mouseleave', () => { isDragging = false; });
+    function step(ts) {
+      const t = Math.min(1, (ts - start) / duration);
+      // easeOutCubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      const cur = Math.round(eased * target);
+      el.textContent = fmt(cur);
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = fmt(target);
+    }
+    requestAnimationFrame(step);
+  }
 
-        // Click handlers for counter dots
-        counters.forEach((counter, index) => {
-            counter.addEventListener('click', () => {
-                if (isCarouselEnabled()) {
-                    showCard(index);
-                }
-            });
+  // 5) Lightweight carousel for cards (touch-friendly)
+  function initCardCarousels() {
+    function setup(sectionSelector) {
+      const section = document.querySelector(sectionSelector);
+      if (!section) return;
+      const wrapper = section.querySelector('[data-slides-wrapper] .inside-w') || section.querySelector('.cards-w .inside-w');
+      const cards = section.querySelectorAll('.cards-w .card, .inside-w .card');
+      const dots = section.querySelectorAll('.carousel-counter .circle-counter, .circle-counter');
+      if (!wrapper || cards.length === 0) return;
+
+      let idx = 0;
+      const total = cards.length;
+      // only use carousel behavior on narrower viewports
+      const enabled = () => window.innerWidth < 1024;
+
+      function show(i) {
+        idx = (i + total) % total;
+        cards.forEach((c, k) => {
+          c.style.transition = 'opacity 420ms cubic-bezier(.2,.9,.2,1), transform 420ms cubic-bezier(.2,.9,.2,1)';
+          if (k === idx) { c.style.opacity = '1'; c.style.transform = 'translateX(0)'; c.style.visibility='visible'; }
+          else if (k < idx) { c.style.opacity = '0'; c.style.transform = 'translateX(-20px)'; c.style.visibility='hidden'; }
+          else { c.style.opacity = '0'; c.style.transform = 'translateX(20px)'; c.style.visibility='hidden'; }
         });
+        dots.forEach((d, k) => d.classList.toggle('active', k === idx));
+      }
 
-        // Initialize first card
-        showCard(0);
+      // initial
+      show(0);
 
-        // Handle window resize
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (!isCarouselEnabled()) {
-                    // Reset styles when carousel is disabled (desktop)
-                    cards.forEach(card => {
-                        card.style.opacity = '';
-                        card.style.visibility = '';
-                        card.style.transform = '';
-                        card.style.zIndex = '';
-                    });
-                } else {
-                    showCard(currentIndex);
-                }
-            }, 250);
-        });
+      // touch handling
+      let startX = null;
+      wrapper.addEventListener('touchstart', e => { if (!enabled()) return; startX = e.touches[0].clientX; }, { passive:true });
+      wrapper.addEventListener('touchend', e => {
+        if (!enabled() || startX === null) return;
+        const diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) { show(idx + (diff > 0 ? 1 : -1)); }
+        startX = null;
+      }, { passive:true });
+
+      // dot click
+      dots.forEach((d, i) => d.addEventListener('click', () => show(i)));
+      // resize reset styles on desktop
+      window.addEventListener('resize', rafThrottled(() => {
+        if (!enabled()) {
+          cards.forEach(c => { c.style.opacity=''; c.style.transform=''; c.style.visibility=''; });
+          dots.forEach(d => d.classList.remove('active'));
+        } else show(idx);
+      }));
     }
 
-    // ========================================
-    // 6. Back to Top Button
-    // ========================================
-    function setupBackToTop() {
-        const backToTop = document.querySelector('.back-top-w');
-        if (!backToTop) return;
+    setup('.privateer-section');
+    setup('.crew-section');
+  }
 
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
+  // 6) Back to top: simple accessibility-friendly
+  function initBackToTop() {
+    const el = document.querySelector('.back-top-w');
+    if (!el) return;
+    el.addEventListener('click', (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    // subtle visibility toggle
+    const onScroll = rafThrottled(() => {
+      const show = window.scrollY > (window.innerHeight * 0.3);
+      el.style.opacity = show ? '1' : '0.5';
+    });
+    window.addEventListener('scroll', onScroll, { passive:true });
+    onScroll();
+  }
 
-        // Show/hide based on scroll position
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTop.style.opacity = '1';
-            } else {
-                backToTop.style.opacity = '0.5';
-            }
-        });
-    }
+  // 7) Scroll indicator: hide when users scroll down
+  function initScrollIndicator() {
+    const el = document.querySelector('.scroll-w');
+    if (!el) return;
+    let hidden = false;
+    const onScroll = rafThrottled(() => {
+      if (window.scrollY > 80 && !hidden) { el.style.opacity = '0'; hidden = true; }
+      else if (window.scrollY <= 80 && hidden) { el.style.opacity = '1'; hidden = false; }
+    });
+    window.addEventListener('scroll', onScroll, { passive:true });
+  }
 
-    // ========================================
-    // 7. Scroll Indicator
-    // ========================================
-    function setupScrollIndicator() {
-        const scrollIndicator = document.querySelector('.scroll-w');
-        if (!scrollIndicator) return;
+  // 8) Cursor reveal (desktop only)
+  function initCursor() {
+    const cw = document.querySelector('.cursor-w');
+    if (!cw) return;
+    setTimeout(()=> cw.classList.add('visible'), 450);
+    if ('ontouchstart' in window || window.innerWidth < 1024) return;
+    const outer = cw.querySelector('.outer-circle');
+    if (!outer) return;
+    document.addEventListener('mousemove', (e) => {
+      outer.style.left = (e.clientX - 29) + 'px';
+      outer.style.top  = (e.clientY - 29) + 'px';
+    }, { passive:true });
+  }
 
-        // Show scroll indicator
-        scrollIndicator.style.opacity = '1';
-        const scrollText = scrollIndicator.querySelector('.scroll-text');
-        const scrollIcon = scrollIndicator.querySelector('.scroll-icon');
-        
-        if (scrollText) scrollText.style.opacity = '1';
-        if (scrollIcon) scrollIcon.style.opacity = '1';
+  // 9) Accessibility toggles and initialization
+  function initAccessibility() {
+    const animBtn = document.querySelector('.accessibility-button.animation');
+    const contrastBtn = document.querySelector('.accessibility-button.contrast');
+    if (animBtn) animBtn.addEventListener('click', () => document.body.classList.toggle('animations-off'));
+    if (contrastBtn) contrastBtn.addEventListener('click', () => document.body.classList.toggle('contrast'));
+  }
 
-        // Hide scroll indicator after scrolling
-        let scrollTimer;
-        window.addEventListener('scroll', () => {
-            clearTimeout(scrollTimer);
-            
-            if (window.scrollY > 100) {
-                scrollIndicator.style.opacity = '0';
-            } else {
-                scrollIndicator.style.opacity = '1';
-            }
-        });
-    }
+  // Initialize everything
+  function initAll() {
+    try { initVideoReveal(); } catch(e){ console.warn(e); }
+    try { initObservers(); } catch(e){ console.warn(e); }
+    try { initAnchorScrolls(); } catch(e){ console.warn(e); }
+    try { initCardCarousels(); } catch(e){ console.warn(e); }
+    try { initBackToTop(); } catch(e){ console.warn(e); }
+    try { initScrollIndicator(); } catch(e){ console.warn(e); }
+    try { initCursor(); } catch(e){ console.warn(e); }
+    try { initAccessibility(); } catch(e){ console.warn(e); }
+    document.body.classList.add('page-loaded');
+  }
 
-    // ========================================
-    // 8. Simple Fade-in Effects
-    // ========================================
-    function setupFadeInEffects() {
-        // Add fade-in class to elements that should animate
-        const elementsToFade = document.querySelectorAll(
-            '.button, .card, .card-text-w, .privateer-icon, .wayfinder-svg'
-        );
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAll);
+  else initAll();
 
-        const fadeObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-
-        elementsToFade.forEach(el => {
-            fadeObserver.observe(el);
-        });
-    }
-
-    // ========================================
-    // 9. Cursor Animation (Simple version)
-    // ========================================
-    function setupCursor() {
-        const cursorWrapper = document.querySelector('.cursor-w');
-        if (!cursorWrapper) return;
-
-        // Show cursor after page load
-        setTimeout(() => {
-            cursorWrapper.classList.add('visible');
-            cursorWrapper.classList.remove('loading');
-        }, 500);
-
-        // Only track cursor on desktop with mouse
-        if (window.innerWidth >= 1024 && !('ontouchstart' in window)) {
-            const cursor = document.querySelector('.cursor.outer-circle');
-            if (!cursor) return;
-
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX - 29 + 'px';
-                cursor.style.top = e.clientY - 29 + 'px';
-            });
-        }
-    }
-
-    // ========================================
-    // 10. Accessibility Buttons
-    // ========================================
-    function setupAccessibilityButtons() {
-        const animButton = document.querySelector('.accessibility-button.animation');
-        const contrastButton = document.querySelector('.accessibility-button.contrast');
-
-        if (animButton) {
-            animButton.style.opacity = '1';
-            animButton.addEventListener('click', () => {
-                document.body.classList.toggle('animations-off');
-                animButton.classList.toggle('off');
-            });
-        }
-
-        if (contrastButton) {
-            contrastButton.style.opacity = '1';
-            contrastButton.addEventListener('click', () => {
-                document.body.classList.toggle('contrast');
-                contrastButton.classList.toggle('off');
-            });
-        }
-    }
-
-    // ========================================
-    // Initialize Everything on DOM Ready
-    // ========================================
-    function init() {
-        setupVideoAutoplay();
-        setupSmoothScroll();
-        setupScrollAnimations();
-        setupCardCarousel();
-        setupBackToTop();
-        setupScrollIndicator();
-        setupFadeInEffects();
-        setupCursor();
-        setupAccessibilityButtons();
-
-        // Mark page as loaded
-        document.body.classList.add('page-loaded');
-    }
-
-    // Run on DOM ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
 })();
