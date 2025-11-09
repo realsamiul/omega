@@ -1,0 +1,6 @@
+/* Omega Space Animations */
+@keyframes rotating{0%{transform:rotate(0deg)}
+
+@keyframes blinkingScale{0%{transform:scale(1)}
+
+@keyframes scroll{0%{top:-33%}

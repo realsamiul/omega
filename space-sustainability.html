@@ -23,7 +23,15 @@
 	<meta name="twitter:description" content="OMEGA, the luxury watch brand, is involved in space sustainability initiatives such as space debris management &amp; environmental protection. Collaborating with Privateer as they map space objects in orbit." />
 
 
-	<link rel="stylesheet" href="/space-sustainability/simple.css">
+	<!-- CSS Cascade: fonts, main, layout, components, animations -->
+	<link rel="stylesheet" href="/assets/css/fonts.css">
+	<link rel="stylesheet" href="/assets/css/main.css">
+	<link rel="stylesheet" href="/assets/css/layout.css">
+	<link rel="stylesheet" href="/assets/css/components.css">
+	<link rel="stylesheet" href="/assets/css/animations.css">
+	<!-- LocomotiveScroll CSS from CDN -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+	
 	<link rel="shortcut icon" href="../../static/version1678201541/frontend/Omega/default/default/Magento_Theme/favicon.ico" />
 	<link rel="icon" href="../../static/version1678201541/frontend/Omega/default/default/Magento_Theme/favicon.ico" />
 	<link rel="icon" type="image/x-icon" href="../../static/version1678201541/frontend/Omega/default/default/Magento_Theme/favicon.ico" />
@@ -395,7 +403,18 @@
 
     <omega-cookies base-url="https://www.omegawatches.com/"></omega-cookies>
 
-	<script src="/space-sustainability/simple.js"></script>
+	<!-- GSAP and ScrollTrigger from CDN -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+	
+	<!-- LocomotiveScroll from CDN -->
+	<script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+	
+	<!-- Boot animations (initializes LocomotiveScroll + ScrollTrigger) -->
+	<script src="/assets/js/boot-animations.js"></script>
+	
+	<!-- Main app bundle -->
+	<script src="/assets/js/app.js"></script>
 
 	<!-- Google Tag Manager (noscript) -->
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M5T2HX"

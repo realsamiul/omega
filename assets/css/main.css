@@ -1,0 +1,53 @@
+/*!
+Theme Name: Omega Space
+Author: 60fps
+Description: Omega Space theme
+Version: 1.1
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: omegaspace
+*/
+
+:root{--full-height-mobile:100vh}
+
+@media (max-width:767px){.hide-mobile{display:none!important}
+
+@media (max-width:1023px) and (min-width:768px){.hide-tablet{display:none!important}
+
+@media (min-width:1024px){.hide-desktop{display:none!important}
+
+@media (min-width:1440px){.hide-large{display:none!important}
+
+
+*{-webkit-tap-highlight-color:transparent;box-sizing:border-box;outline:none;user-select:none;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none}
+#root{min-height:var(--window-height);min-height:-webkit-fill-available}
+#root,html{position:relative}
+html{height:100%;height:-webkit-fill-available;margin:0;padding:0;width:100%}
+body{-moz-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;-moz-text-size-adjust:none;text-size-adjust:none;--window-height:100vh;margin:0;overscroll-behavior:none}
+h1,h2,h3,h4,h5,h6,li,ol,p,ul{display:block;margin:0;padding:0}
+p{-webkit-margin-before:0;-webkit-margin-after:0;-webkit-margin-start:0}
+ul{list-style-type:none}
+a{-webkit-user-drag:none;-khtml-user-drag:none;-moz-user-drag:none;-o-user-drag:none;user-drag:none;border:none;color:inherit;text-decoration:inherit;user-select:none;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none}
+[data-follow-link],a,a[href]{cursor:pointer}
+input,textarea{background:none;border:0;border-radius:0;margin:0;padding:0}
+input::-moz-placeholder,textarea::-moz-placeholder{color:inherit;font:inherit}
+input::placeholder,textarea::placeholder{color:inherit;font:inherit}
+button{-moz-appearance:none;appearance:none;-webkit-appearance:none;background:none;border:none;color:inherit;cursor:pointer;padding:0}
+button:focus{outline:none}
+input[type=checkbox]{-moz-appearance:none;appearance:none;-webkit-appearance:none;cursor:pointer}
+html{font-size:max(.2666666667vw,1px)}
+@media (min-width:768px){html{font-size:.1vw}}
+@media (min-width:1024px){html{font-size:.0520835vw}}
+.module{min-height:100vh;position:relative;width:100%}
+html{scroll-behavior:auto}
+.split-line,.split-word{white-space:nowrap}
+.wcag-hidden{clip:rect(0,0,0,0);border:0;display:block!important;height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;width:1px!important}
+.fullscreen{height:var(--full-height-mobile)}
+@media (min-width:768px){.fullscreen{height:100vh}}
+.white{color:#fff}
+.black{color:#000}
+.bg-white{background-color:#fff}
+.bg-black{background-color:#000}
+.lines{white-space:nowrap}
+.char,.lines,.word{opacity:0}
+.tp-dfwv{z-index:10000}
