@@ -10,20 +10,31 @@
     visibility: visible !important;
 }
 
-/* Simple fade-in animation */
-section {
+/* Simple fade-in animation for specific sections */
+.hero-section,
+.protecting-section,
+.objects-section,
+.crew-section {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-section.visible {
+.hero-section.visible,
+.protecting-section.visible,
+.objects-section.visible,
+.crew-section.visible {
     opacity: 1;
     transform: translateY(0);
 }
 
 /* Ensure content loads immediately if JavaScript fails */
-.no-js section {
-    opacity: 1;
-    transform: none;
+.no-js section,
+.no-js .hero-section,
+.no-js .protecting-section,
+.no-js .objects-section,
+.no-js .crew-section {
+    opacity: 1 !important;
+    transform: none !important;
 }
+

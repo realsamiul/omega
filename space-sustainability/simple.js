@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', function() {
         video.play();
     }
     
+    // Make hero section visible immediately
+    const heroSection = document.querySelector('.hero-section');
+    if (heroSection) {
+        heroSection.classList.add('visible');
+    }
+    
     // Simple scroll animations
     const observerOptions = {
         threshold: 0.1,
